@@ -1,57 +1,76 @@
 # 🛡️ Assurances Saint Gabriel (ASG)
 
-Plateforme web de gestion et de souscription d'assurances réalisée dans le cadre d'une refonte numérique complète. Ce projet transforme un site vitrine statique en une application dynamique, sécurisée et maintenable.
+Application web de gestion d'assurances développée en PHP natif. Ce projet permet la gestion des contrats, des clients et des collaborateurs via des interfaces dédiées et sécurisées.
 
-## 📋 Contexte du projet
+## 📋 Contexte
 
-Suite à la fusion de plusieurs entités et au rachat par un groupe suisse, les **Assurances Saint Gabriel** (Bagneux, France) modernisent leur système d'information. L'objectif est de digitaliser la relation client et de sécuriser les données sensibles conformément aux normes actuelles (RGPD, Sécurité Web).
+Projet réalisé dans le cadre d'une refonte numérique pour les **Assurances Saint Gabriel**. L'application remplace un site vitrine statique par une solution dynamique permettant :
+* L'inscription et la connexion des assurés.
+* La gestion de portefeuille pour les collaborateurs.
+* Une administration complète (utilisateurs, actualités).
 
-## 🚀 Fonctionnalités Clés
+## 🛠 Technologies utilisées
 
-Le projet est construit autour de 4 rôles utilisateurs distincts :
+* **Backend :** PHP 8 (Procédural)
+* **Base de données :** MySQL
+* **Frontend :** HTML5, CSS3, JavaScript
+* **Framework CSS :** Bootstrap 5
+* **Sécurité :** `.htaccess`, `password_hash`, requêtes préparées (PDO)
 
-### 👤 Espace Public & Visiteur
-* **Vitrine :** Présentation de l'entreprise et des valeurs.
-* **Catalogue :** Consultation dynamique des types de contrats disponibles (Auto, Habitation, Santé, etc.).
-* **Actualités :** Système de news géré par l'administration.
-* **Inscription :** Création de compte sécurisée avec vérification des données (JS & PHP).
+## 📂 Structure du projet
 
-### 🔐 Espace Client (Assuré)
-* **Tableau de bord :** Vue d'ensemble des contrats souscrits.
-* **Gestion de profil :** Modification des coordonnées (Adresse, Téléphone, etc.).
-* **Sécurité :** Modification du mot de passe et identification de son conseiller attitré.
+L'architecture du projet est organisée de manière fonctionnelle à la racine :
 
-### 💼 Espace Collaborateur
-* **Gestion de portefeuille :** Accès restreint uniquement aux clients possédant des contrats gérés par le collaborateur (Logique de permission stricte).
-* **Modification Client :** Mise à jour des informations des assurés.
-* **Statistiques :** Vue globale sur le nombre de clients et contrats gérés.
+### 🔹 Cœur de l'application
+* `index.php` : Page d'accueil (Actualités et Présentation).
+* `config_db.php` : Configuration et connexion à la base de données (Sécurisé).
+* `navbar.php` : Menu de navigation dynamique (s'adapte selon le rôle connecté).
+* `footer.php` : Pied de page commun.
+* `logout.php` : Script de déconnexion.
+* `.htaccess` : Sécurisation du serveur et protection des fichiers sensibles.
 
-### 🛠️ Espace Administrateur
-* **Gestion des Utilisateurs :** CRUD complet (Créer, Lire, Mettre à jour, Supprimer) sur les comptes.
-* **Gestion des Actualités :** Publication et suppression d'articles.
-* **Supervision :** Vue globale sur l'ensemble du système.
+### 🔹 Pages Publiques (Vitrine)
+* `about.php` : Présentation des activités.
+* `products.php` : Liste des contrats d'assurance disponibles.
+* `crew.php` : Présentation de l'équipe.
+* `contact.php` : Formulaire de contact.
+* `mentions-legales.php` : Informations juridiques.
 
-## 💻 Stack Technique
+### 🔹 Espaces Connectés
+* **Admin** (`admin.php`) : Gestion globale des utilisateurs et des actualités.
+* **Collaborateur** (`collaborateur.php`) : Gestion des clients ayant souscrit aux assurances gérées par le collaborateur.
+* **Client** (`interface.php`) : Espace personnel de l'assuré (visu contrats, modif profil).
 
-* **Langage Backend :** PHP 8 (Architecture MVC / Orientée Objet).
-* **Base de données :** MySQL (PDO, Requêtes préparées).
-* **Frontend :** HTML5, CSS3, JavaScript (Validation formulaires).
-* **Framework CSS :** Bootstrap 5 (Responsive Design).
-* **Sécurité :**
-    * Hachage des mots de passe (`password_hash`).
-    * Protection contre les injections SQL (`prepare`/`execute`).
-    * Protection XSS (`htmlspecialchars`).
-    * Gestion des sessions et redirection par rôles.
+### 🔹 Authentification
+* `inscription.php` : Formulaire de création de compte (avec validation JS).
+* `connexion.php` : Formulaire d'identification.
+* `verif.php` : Script de traitement de l'inscription.
 
-## 🗂️ Structure du projet (MVC)
+## 🚀 Installation locale
 
-Le projet suit une organisation logique pour faciliter la maintenance :
+1.  **Cloner le dépôt :**
+    ```bash
+    git clone [https://github.com/TON_NOM_UTILISATEUR/Assurances-Saint-Gabriel.git](https://github.com/TON_NOM_UTILISATEUR/Assurances-Saint-Gabriel.git)
+    ```
 
-```text
-/
-├── config/          # Configuration BDD sécurisée
-├── controllers/     # Logique de traitement (Auth, User)
-├── models/          # Interactions avec la base de données
-├── views/           # Interfaces utilisateurs (Admin, Client, etc.)
-├── assets/          # CSS, JS, Images
-└── index.php        # Routeur principal
+2.  **Base de données :**
+    * Créer une base de données (ex: `asg_project`).
+    * Importer le fichier SQL (si disponible) ou créer les tables `info` (utilisateurs), `contrat`, `actualites`, `role`.
+
+3.  **Configuration :**
+    * Ouvrir `config_db.php`.
+    * Modifier les identifiants (`$host`, `$db`, `$user`, `$pass`) avec vos paramètres locaux.
+
+4.  **Lancement :**
+    * Placer le dossier dans votre serveur local (WAMP/XAMPP/MAMP).
+    * Accéder via `http://localhost/Assurances-Saint-Gabriel`.
+
+## 🔐 Gestion des Rôles
+
+Le système gère 3 niveaux d'accès via la table `role` :
+1.  **Administrateur** (ID 1) : Accès total.
+2.  **Collaborateur** (ID 2) : Accès restreint à ses propres clients.
+3.  **Client** (ID 3) : Accès à son profil personnel.
+
+---
+*Projet réalisé à des fins pédagogiques.*
